@@ -1,0 +1,11 @@
+.choice-box {
+
+    -fx-pref-width: 300;
+
+}
+
+.choice-box .menu-item > .label {
+
+    -fx-pref-width: 270;
+
+}
