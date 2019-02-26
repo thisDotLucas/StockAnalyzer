@@ -12,6 +12,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import json.AlphaVantage;
 
 public class Gui extends Application {
 
@@ -19,6 +20,7 @@ public class Gui extends Application {
     Button queryButton;
     ChoiceBox dataSeries, timeSeries, symbol, timeInterval, outputSize;
     Label dataLabel,dataLabe2,dataLabe3,dataLabe4,dataLabe5;
+    AlphaVantage data;
 
      @Override
     public void start(Stage primaryStage) throws Exception {
@@ -38,22 +40,58 @@ public class Gui extends Application {
 
 
          //Graph
-
         //FXMLDocumentController graph = new FXMLDocumentController();
         //GraphController graph = new GraphController();
 
 
          //Querybutton
          queryButton = new Button("Do query");
-         queryButton.setOnAction(e -> {
+         queryButton.setOnAction(event -> {
 
-              for(int i = 0; i < 50; i++){
+              String date;
+              String series = dataSeries.getValue().toString();
+              int interval = Integer.parseInt(timeInterval.getValue().toString().replace("min", ""));
+              int year = 2019;
+              int month = 02;
+              int day = 26;
+              int hour = 16;
+              int minute = 00;
 
-                   text.appendText("Maxemillian är homosexuell\n");
+              if (minute == 00) {
+
+                   date = year + "-" + month + "-" + day + " " + hour + ":" + minute + "0:00";
+
+              } else if (month < 10){
+
+                   date = year + "-0" + month + "-" + day + " " + hour + ":" + minute + ":00";
+
+              } else {
+
+                   date = year + "-" + month + "-" + day + " " + hour + ":" + minute + ":00";
 
               }
+
+
+              data = new AlphaVantage();
+
+              while(true) {
+
+                   try {
+
+                        text.appendText(data.callMe(series, date));
+
+
+                   } catch (Exception e) {
+
+                        System.out.println(e);
+                        break;
+
+                   }
+              }
+
          });
          GridPane.setConstraints(queryButton,1,5);
+
 
          //Textarea
          text = new TextArea();
@@ -73,7 +111,7 @@ public class Gui extends Application {
 
          //Dropboxes
          dataSeries = new ChoiceBox(FXCollections.observableArrayList(
-                 "Option1", "Option2", "Option3")
+                 "1. open", "2. high", "3. low", "4. close", "5. volume")
          );
          dataSeries.getStylesheets().add("prog3/ChoiceBoxes.css");
 
@@ -88,7 +126,7 @@ public class Gui extends Application {
          symbol.getStylesheets().add("prog3/ChoiceBoxes.css");
 
          timeInterval = new ChoiceBox(FXCollections.observableArrayList(
-                 "Option1", "Option2", "Option3")
+                 "15min", "30min", "60min")
          );
          timeInterval.getStylesheets().add("prog3/ChoiceBoxes.css");
 
