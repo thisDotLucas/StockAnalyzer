@@ -15,15 +15,13 @@ import javafx.stage.Stage;
 
 public class Gui extends Application {
 
-    GraphController graph;
     TextArea text;
     Button queryButton;
     ChoiceBox dataSeries, timeSeries, symbol, timeInterval, outputSize;
+    Label dataLabel,dataLabe2,dataLabe3,dataLabe4,dataLabe5;
 
      @Override
     public void start(Stage primaryStage) throws Exception {
-
-         primaryStage.setTitle("Stock Analyzer");
 
          //Layouts
          BorderPane main = new BorderPane();
@@ -39,14 +37,11 @@ public class Gui extends Application {
          graphLayout.setHgap(10);
 
 
-
          //Graph
 
         //FXMLDocumentController graph = new FXMLDocumentController();
-        // graph = new GraphController();
+        //GraphController graph = new GraphController();
 
-         main.setLeft(layout);
-         //main.setCenter(graph.initialize());
 
          //Querybutton
          queryButton = new Button("Do query");
@@ -69,16 +64,12 @@ public class Gui extends Application {
 
 
          //Labels
-         Label dataLabel = new Label("Data Series");
-         Label dataLabe2 = new Label("Time Series");
-         Label dataLabe3 = new Label("Symbol");
-         Label dataLabe4 = new Label("Time Interval");
-         Label dataLabe5 = new Label("Output Size");
-         GridPane.setConstraints(dataLabel, 0, 0);
-         GridPane.setConstraints(dataLabe2, 0, 1);
-         GridPane.setConstraints(dataLabe3, 0, 2);
-         GridPane.setConstraints(dataLabe4, 0, 3);
-         GridPane.setConstraints(dataLabe5, 0, 4);
+         dataLabel = new Label("Data Series");
+         dataLabe2 = new Label("Time Series");
+         dataLabe3 = new Label("Symbol");
+         dataLabe4 = new Label("Time Interval");
+         dataLabe5 = new Label("Output Size");
+
 
          //Dropboxes
          dataSeries = new ChoiceBox(FXCollections.observableArrayList(
@@ -106,18 +97,31 @@ public class Gui extends Application {
          );
          outputSize.getStylesheets().add("prog3/ChoiceBoxes.css");
 
+
+         //Placements
+         GridPane.setConstraints(dataLabel, 0, 0);
+         GridPane.setConstraints(dataLabe2, 0, 1);
+         GridPane.setConstraints(dataLabe3, 0, 2);
+         GridPane.setConstraints(dataLabe4, 0, 3);
+         GridPane.setConstraints(dataLabe5, 0, 4);
          GridPane.setConstraints(dataSeries, 1, 0);
          GridPane.setConstraints(timeSeries, 1, 1);
          GridPane.setConstraints(symbol, 1, 2);
          GridPane.setConstraints(timeInterval, 1, 3);
          GridPane.setConstraints(outputSize, 1, 4);
+         main.setLeft(layout);
+         //main.setCenter(graph.initialize());
 
-         //action
+
+          //Scene
          layout.getChildren().addAll(dataLabel, dataLabe2, dataLabe3, dataLabe4, dataLabe5,
                  dataSeries, timeSeries, symbol, timeInterval, outputSize, queryButton, text);
 
-
          Scene scene = new Scene(main);
+
+
+         //Stage
+         primaryStage.setTitle("Stock Analyzer");
          primaryStage.setScene(scene);
          primaryStage.sizeToScene();
          primaryStage.show();
