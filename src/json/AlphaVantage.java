@@ -40,10 +40,11 @@ public class AlphaVantage {
             String outp = "";
             JSONObject object = new JSONObject(response.toString());
             JSONObject objects = object.getJSONObject("Time Series (15min)");
+            time = cal.getTime();
 
             for(int i = 0; i < objects.length(); i++) {
 
-                if (objects.has((new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(time)))) {
+                if (objects.has(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(time)) && !objects.isNull(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(time))) {
 
                     time = cal.getTime();
 
@@ -55,7 +56,7 @@ public class AlphaVantage {
 
                 } else {
 
-                    ;
+                    System.out.println("lololololol");
 
                 }
 
