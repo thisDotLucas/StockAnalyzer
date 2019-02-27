@@ -66,22 +66,19 @@ public class Gui extends Application {
               System.out.println(time);
 
               data = new AlphaVantage();
-              data.
 
-              while(true) {
+               {
 
                    try {
-
-                        String out = data.getJson(series,
-                                new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(time));
+                        String out = data.getJson(series, cal, time ,interval);
                         text.appendText(out);
-                        cal.add(Calendar.MINUTE, - interval);
-                        time = cal.getTime();
+                        //cal.add(Calendar.MINUTE, - interval);
+                        //time = cal.getTime();
 
                    } catch (Exception e) {
 
                         System.out.println(e);
-                        break;
+                        //break;
 
                    }
               }

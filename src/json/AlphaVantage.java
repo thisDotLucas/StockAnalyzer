@@ -4,6 +4,9 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -11,7 +14,7 @@ import org.json.JSONString;
 
 public class AlphaVantage {
 
-    public static String getJson(String key, String inDate) throws Exception {
+    public static String getJson(String key, Calendar cal, Date time, int interval) throws Exception {
 
         try {
 
@@ -34,18 +37,40 @@ public class AlphaVantage {
             }
             in.close();
 
+            String outp = "";
             JSONObject object = new JSONObject(response.toString());
             JSONObject objects = object.getJSONObject("Time Series (15min)");
-            JSONObject dates = objects.getJSONObject(inDate);
-            System.out.println(dates.getString(key));
 
-            return "Date: " + inDate + ": " + dates.getString(key);
+            for(int i = 0; i < objects.length(); i++) {
 
-        } catch (Exception e){
+                if (objects.has((new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(time)))) {
+
+                    time = cal.getTime();
+
+                    JSONObject dates = objects.getJSONObject(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(time));
+                    System.out.println(dates.getString(key));
+                    cal.add(Calendar.MINUTE, -interval);
+
+                    outp += "Date: " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(time) + ": " + dates.getString(key) + "\n";
+
+                } else {
+
+                    ;
+
+                }
+
+            }
+
+            return outp;
+
+        } catch (Exception e) {
 
             System.out.println(e);
-            return"";
 
         }
 
-}}
+
+        return "";
+    }
+
+}
