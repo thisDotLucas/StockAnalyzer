@@ -52,10 +52,9 @@ public class Gui extends Application {
          queryButton = new Button("Do query");
          queryButton.setOnAction(event -> {
 
-              String date;
               String series = dataSeries.getValue().toString();
               int interval = Integer.parseInt(timeInterval.getValue().toString().replace("min", ""));
-              Date time = new Date();
+              Date time;
               Calendar cal = Calendar.getInstance();
               cal.set(Calendar.YEAR, 2019);
               cal.set(Calendar.MONTH, 1);
@@ -67,12 +66,14 @@ public class Gui extends Application {
               System.out.println(time);
 
               data = new AlphaVantage();
+              data.
 
               while(true) {
 
                    try {
 
-                        String out = data.getJson(series, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(time));
+                        String out = data.getJson(series,
+                                new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(time));
                         text.appendText(out);
                         cal.add(Calendar.MINUTE, - interval);
                         time = cal.getTime();
