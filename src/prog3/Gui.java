@@ -14,6 +14,10 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import json.AlphaVantage;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 public class Gui extends Application {
 
     TextArea text;
@@ -51,26 +55,16 @@ public class Gui extends Application {
               String date;
               String series = dataSeries.getValue().toString();
               int interval = Integer.parseInt(timeInterval.getValue().toString().replace("min", ""));
-              int year = 2019;
-              int month = 02;
-              int day = 26;
-              int hour = 16;
-              int minute = 00;
-
-              if (minute == 00) {
-
-                   date = year + "-" + month + "-" + day + " " + hour + ":" + minute + "0:00";
-
-              } else if (month < 10){
-
-                   date = year + "-0" + month + "-" + day + " " + hour + ":" + minute + ":00";
-
-              } else {
-
-                   date = year + "-" + month + "-" + day + " " + hour + ":" + minute + ":00";
-
-              }
-
+              Date time = new Date();
+              Calendar cal = Calendar.getInstance();
+              cal.set(Calendar.YEAR, 2019);
+              cal.set(Calendar.MONTH, 1);
+              cal.set(Calendar.DATE, 26);
+              cal.set(Calendar.HOUR_OF_DAY, 16);
+              cal.set(Calendar.MINUTE, 0);
+              cal.set(Calendar.SECOND, 0);
+              time = cal.getTime();
+              System.out.println(time);
 
               data = new AlphaVantage();
 
@@ -78,8 +72,10 @@ public class Gui extends Application {
 
                    try {
 
-                        text.appendText(data.callMe(series, date));
-
+                        String out = data.getJson(series, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(time));
+                        text.appendText(out);
+                        cal.add(Calendar.MINUTE, - interval);
+                        time = cal.getTime();
 
                    } catch (Exception e) {
 

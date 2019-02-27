@@ -11,7 +11,7 @@ import org.json.JSONString;
 
 public class AlphaVantage {
 
-    public static String callMe(String key, String inDate) throws Exception {
+    public static String getJson(String key, String inDate) throws Exception {
 
         try {
 
