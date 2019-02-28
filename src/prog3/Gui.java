@@ -20,12 +20,12 @@ import java.util.Date;
 
 public class Gui extends Application {
 
-    int counter = 0;
     TextArea text;
     Button queryButton;
     ChoiceBox dataSeries, timeSeries, symbol, timeInterval, outputSize;
     Label dataLabel, dataLabe2, dataLabe3, dataLabe4, dataLabe5;
     AlphaVantage data;
+    int counter = 0;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -53,21 +53,31 @@ public class Gui extends Application {
         queryButton = new Button("Do query");
         queryButton.setOnAction(event -> {
 
-            counter++;
             text.clear();
             String series = dataSeries.getValue().toString();
-            String interval = timeInterval.getValue().toString();
+            String interval = "&interval=" + timeInterval.getValue().toString();
             String timeSer = timeSeries.getValue().toString();
-            String symb = symbol.getValue().toString();
-            String size = outputSize.getValue().toString();
+            String symb = "&symbol=" + symbol.getValue().toString();
+            String size = "&outputsize=" + outputSize.getValue().toString();
 
             data = new AlphaVantage();
 
             {
 
                 try {
-                    String out = data.getJson(series, interval, timeSer, symb, size);
-                    text.appendText(out);
+
+                   // if (counter == 0) {
+
+                        String out = data.getJson(series, interval, timeSer, symb, size);
+                        text.appendText(out);
+                        counter++;
+
+                    //} else {
+
+                      //  String out = data.getUpdate(data.object, series, interval);
+                        //text.appendText(out);
+
+                    //}
 
                 } catch (Exception e) {
 
@@ -140,30 +150,33 @@ public class Gui extends Application {
 
                 timeInterval.setDisable(true);
                 outputSize.setDisable(true);
-                timeInterval.setValue("1min");
-                outputSize.setValue("full");
+                timeInterval.setValue("Daily");
+                outputSize.setValue("");
 
             } else if (newValue.toString().equals("TIME_SERIES_MONTHLY_ADJUSTED")){
 
                 timeInterval.setDisable(true);
                 outputSize.setDisable(true);
-                timeInterval.setValue("1min");
-                outputSize.setValue("full");
+                timeInterval.setValue("Monthly");
+                outputSize.setValue("");
 
             } else if (newValue.toString().equals("TIME_SERIES_WEEKLY_ADJUSTED")){
 
                 timeInterval.setDisable(true);
                 outputSize.setDisable(true);
-                timeInterval.setValue("1min");
-                outputSize.setValue("full");
+                timeInterval.setValue("Weekly");
+                outputSize.setValue("");
 
             } else {
 
-                timeInterval.setDisable(false);
-                outputSize.setDisable(false);
-                timeInterval.setValue("");
-                outputSize.setValue("");
+                if (counter > 0) {
 
+                    timeInterval.setDisable(false);
+                    outputSize.setDisable(false);
+                    timeInterval.setValue("15min");
+                    outputSize.setValue("full");
+
+                }
             }
 
         });

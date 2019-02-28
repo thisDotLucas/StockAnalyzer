@@ -21,7 +21,7 @@ public class AlphaVantage {
 
         try {
 
-            String url = "https://www.alphavantage.co/query?function=" + timeSer + "&symbol=" + symbol + "&interval=" + interval + "&outputsize=" + size + "&apikey=0OPBQ9QM2UDDW9TD";
+            String url = "https://www.alphavantage.co/query?function=" + timeSer + symbol + interval + size + "&apikey=0OPBQ9QM2UDDW9TD";
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
             con.setRequestMethod("GET");
@@ -38,27 +38,8 @@ public class AlphaVantage {
             }
             in.close();
 
-            //String outp = "";
             object = new JSONObject(response.toString());
             return getUpdate(object, key, interval);
-            //JSONObject objects = object.getJSONObject("Time Series (" + interval + ")");
-            //Iterator<String> keys = objects.keys();
-
-            //while (keys.hasNext()){
-
-                //String key1 = keys.next();
-
-                //if(objects.get(key1) instanceof JSONObject){
-
-                  //  JSONObject values = objects.getJSONObject(key1);
-
-                //    outp += "Date: " + key1 + ": " + values.getString(key) + "\n";
-
-              //  }
-
-            //}
-
-          //  return outp;
 
         } catch (Exception e) {
 
@@ -72,7 +53,7 @@ public class AlphaVantage {
     public static String getUpdate(JSONObject object, String key, String interval){
 
         String outp = "Showing " + key + "\n";
-        JSONObject objects = object.getJSONObject("Time Series (" + interval + ")");
+        JSONObject objects = object.getJSONObject("Time Series (" + interval.replace("&interval=", "") + ")");
         Iterator<String> keys = objects.keys();
 
         while (keys.hasNext()){
