@@ -20,8 +20,11 @@ public class AlphaVantage {
     public String getJson(String key, String interval, String timeSer, String symbol, String size) throws Exception {
 
         try {
-
-            String url = "https://www.alphavantage.co/query?function=" + timeSer + symbol + interval + size + "&apikey=0OPBQ9QM2UDDW9TD";
+            String url;
+            if (size.equals("&outputsize="))
+                url = "https://www.alphavantage.co/query?function=" + timeSer + symbol + "&apikey=0OPBQ9QM2UDDW9TD";
+            else
+                url = "https://www.alphavantage.co/query?function=" + timeSer + symbol + interval + size + "&apikey=0OPBQ9QM2UDDW9TD";
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
             con.setRequestMethod("GET");
@@ -52,8 +55,15 @@ public class AlphaVantage {
 
     public static String getUpdate(JSONObject object, String key, String interval){
 
+        JSONObject objects = null;
         String outp = "Showing " + key + "\n";
-        JSONObject objects = object.getJSONObject("Time Series (" + interval.replace("&interval=", "") + ")");
+        interval = interval.replace("&interval=", "");
+
+        if (interval.equals("1min")||interval.equals("5min")||interval.equals("15min")||interval.equals("30min")||interval.equals("60min"))
+            objects = object.getJSONObject("Time Series (" + interval + ")");
+        else
+        objects = object.getJSONObject(interval);
+
         Iterator<String> keys = objects.keys();
 
         while (keys.hasNext()){

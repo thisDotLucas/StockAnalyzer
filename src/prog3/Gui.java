@@ -66,18 +66,9 @@ public class Gui extends Application {
 
                 try {
 
-                   // if (counter == 0) {
-
                         String out = data.getJson(series, interval, timeSer, symb, size);
                         text.appendText(out);
                         counter++;
-
-                    //} else {
-
-                      //  String out = data.getUpdate(data.object, series, interval);
-                        //text.appendText(out);
-
-                    //}
 
                 } catch (Exception e) {
 
@@ -150,21 +141,21 @@ public class Gui extends Application {
 
                 timeInterval.setDisable(true);
                 outputSize.setDisable(true);
-                timeInterval.setValue("Daily");
+                timeInterval.setValue("Time Series (Daily)");
                 outputSize.setValue("");
 
             } else if (newValue.toString().equals("TIME_SERIES_MONTHLY_ADJUSTED")){
 
                 timeInterval.setDisable(true);
                 outputSize.setDisable(true);
-                timeInterval.setValue("Monthly");
+                timeInterval.setValue("Monthly Adjusted Time Series");
                 outputSize.setValue("");
 
             } else if (newValue.toString().equals("TIME_SERIES_WEEKLY_ADJUSTED")){
 
                 timeInterval.setDisable(true);
                 outputSize.setDisable(true);
-                timeInterval.setValue("Weekly");
+                timeInterval.setValue("Weekly Adjusted Time Series");
                 outputSize.setValue("");
 
             } else {
