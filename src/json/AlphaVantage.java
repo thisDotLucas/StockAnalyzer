@@ -19,12 +19,10 @@ public class AlphaVantage {
 
         try {
 
-            String url = "https://www.alphavantage.co/query?function=" + timeSer + "&symbol=" + symbol + "&interval=" + interval + "&outputsize=" + size +"&apikey=0OPBQ9QM2UDDW9TD";
+            String url = "https://www.alphavantage.co/query?function=" + timeSer + "&symbol=" + symbol + "&interval=" + interval + "&outputsize=" + size + "&apikey=0OPBQ9QM2UDDW9TD";
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-            // optional default is GET
             con.setRequestMethod("GET");
-            //add request header
             con.setRequestProperty("User-Agent", "Mozilla/5.0");
             int responseCode = con.getResponseCode();
             System.out.println("\nSending 'GET' request to URL : " + url);
@@ -67,5 +65,11 @@ public class AlphaVantage {
 
         return "";
     }
+
+    //public static String getUpdate(){
+
+
+
+    //}
 
 }
