@@ -89,7 +89,7 @@ public class Gui extends Application {
 
          //Textarea
          text = new TextArea();
-         text.setMinSize(500, 500);
+         text.setMinSize(500, 350);
          text.positionCaret(500);
          GridPane.setConstraints(text, 0, 7);
          GridPane.setColumnSpan(text, 5);

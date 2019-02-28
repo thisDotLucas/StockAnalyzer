@@ -7,6 +7,7 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -40,29 +41,44 @@ public class AlphaVantage {
             String outp = "";
             JSONObject object = new JSONObject(response.toString());
             JSONObject objects = object.getJSONObject("Time Series (15min)");
-            time = cal.getTime();
+            Iterator<String> keys = objects.keys();
 
-            for(int i = 0; i < objects.length(); i++) {
+            while (keys.hasNext()){
 
-                if (objects.has(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(time)) && !objects.isNull(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(time))) {
+                String key1 = keys.next();
+                
+                if(objects.get(key1) instanceof JSONObject){
 
-                    time = cal.getTime();
+                    JSONObject values = objects.getJSONObject(key1);
 
-                    JSONObject dates = objects.getJSONObject(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(time));
-                    System.out.println(dates.getString(key));
-                    cal.add(Calendar.MINUTE, -interval);
-
-                    outp += "Date: " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(time) + ": " + dates.getString(key) + "\n";
-
-                } else {
-
-                    System.out.println("lololololol");
+                    outp += "Date: " + key1 + ": " + values.getString(key) + "\n";
 
                 }
 
             }
 
             return outp;
+
+           // for(int i = 0; i < objects.length(); i++) {
+
+             //   time = cal.getTime();
+               // if (objects.has(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(time)) && !objects.isNull(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(time))) {
+
+                 //   JSONObject dates = objects.getJSONObject(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(time));
+                   // cal.add(Calendar.MINUTE, -interval);
+
+                    //outp += "Date: " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(time) + ": " + dates.getString(key) + "\n";
+
+                //} else {
+
+                  //  cal.add(Calendar.MINUTE, -interval);
+                    //outp += "x\n";
+
+                //}
+
+            //}
+
+            //return outp;
 
         } catch (Exception e) {
 
