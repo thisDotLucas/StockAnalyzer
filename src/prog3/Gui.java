@@ -53,14 +53,17 @@ public class Gui extends Application {
          queryButton.setOnAction(event -> {
 
               String series = dataSeries.getValue().toString();
-              //int interval = Integer.parseInt(timeInterval.getValue().toString().replace("min", ""));
+              String interval = timeInterval.getValue().toString();
+              String timeSer = timeSeries.getValue().toString();
+              String symb = symbol.getValue().toString();
+              String size = outputSize.getValue().toString();
 
               data = new AlphaVantage();
 
                {
 
                    try {
-                        String out = data.getJson(series);
+                        String out = data.getJson(series, interval, timeSer, symb, size);
                         text.appendText(out);
 
                    } catch (Exception e) {
@@ -97,22 +100,22 @@ public class Gui extends Application {
          dataSeries.getStylesheets().add("prog3/ChoiceBoxes.css");
 
          timeSeries = new ChoiceBox(FXCollections.observableArrayList(
-                 "Option1", "Option2", "Option3")
+                 "TIME_SERIES_INTRADAY", "TIME_SERIES_MONTHLY_ADJUSTED")
          );
          timeSeries.getStylesheets().add("prog3/ChoiceBoxes.css");
 
          symbol = new ChoiceBox(FXCollections.observableArrayList(
-                 "Option1", "Option2", "Option3")
+                 "MSFT")
          );
          symbol.getStylesheets().add("prog3/ChoiceBoxes.css");
 
          timeInterval = new ChoiceBox(FXCollections.observableArrayList(
-                 "15min", "30min", "60min")
+                 "1min", "5min", "10min", "15min", "30min", "60min", "120min")
          );
          timeInterval.getStylesheets().add("prog3/ChoiceBoxes.css");
 
          outputSize = new ChoiceBox(FXCollections.observableArrayList(
-                 "Option1", "Option2", "Option3")
+                 "full")
          );
          outputSize.getStylesheets().add("prog3/ChoiceBoxes.css");
 

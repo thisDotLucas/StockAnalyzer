@@ -15,11 +15,11 @@ import org.json.JSONString;
 
 public class AlphaVantage {
 
-    public static String getJson(String key) throws Exception {
+    public static String getJson(String key, String interval, String timeSer, String symbol, String size) throws Exception {
 
         try {
 
-            String url = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=MSFT&interval=15min&outputsize=full&apikey=0OPBQ9QM2UDDW9TD";
+            String url = "https://www.alphavantage.co/query?function=" + timeSer + "&symbol=" + symbol + "&interval=" + interval + "&outputsize=" + size +"&apikey=0OPBQ9QM2UDDW9TD";
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
             // optional default is GET
@@ -40,7 +40,7 @@ public class AlphaVantage {
 
             String outp = "";
             JSONObject object = new JSONObject(response.toString());
-            JSONObject objects = object.getJSONObject("Time Series (15min)");
+            JSONObject objects = object.getJSONObject("Time Series (" + interval + ")");
             Iterator<String> keys = objects.keys();
 
             while (keys.hasNext()){
