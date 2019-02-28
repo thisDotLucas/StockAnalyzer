@@ -15,7 +15,9 @@ import org.json.JSONString;
 
 public class AlphaVantage {
 
-    public static String getJson(String key, String interval, String timeSer, String symbol, String size) throws Exception {
+    public JSONObject object;
+
+    public String getJson(String key, String interval, String timeSer, String symbol, String size) throws Exception {
 
         try {
 
@@ -36,26 +38,27 @@ public class AlphaVantage {
             }
             in.close();
 
-            String outp = "";
-            JSONObject object = new JSONObject(response.toString());
-            JSONObject objects = object.getJSONObject("Time Series (" + interval + ")");
-            Iterator<String> keys = objects.keys();
+            //String outp = "";
+            object = new JSONObject(response.toString());
+            return getUpdate(object, key, interval);
+            //JSONObject objects = object.getJSONObject("Time Series (" + interval + ")");
+            //Iterator<String> keys = objects.keys();
 
-            while (keys.hasNext()){
+            //while (keys.hasNext()){
 
-                String key1 = keys.next();
+                //String key1 = keys.next();
 
-                if(objects.get(key1) instanceof JSONObject){
+                //if(objects.get(key1) instanceof JSONObject){
 
-                    JSONObject values = objects.getJSONObject(key1);
+                  //  JSONObject values = objects.getJSONObject(key1);
 
-                    outp += "Date: " + key1 + ": " + values.getString(key) + "\n";
+                //    outp += "Date: " + key1 + ": " + values.getString(key) + "\n";
 
-                }
+              //  }
 
-            }
+            //}
 
-            return outp;
+          //  return outp;
 
         } catch (Exception e) {
 
@@ -66,10 +69,30 @@ public class AlphaVantage {
         return "";
     }
 
-    //public static String getUpdate(){
+    public static String getUpdate(JSONObject object, String key, String interval){
+
+        String outp = "Showing " + key + "\n";
+        JSONObject objects = object.getJSONObject("Time Series (" + interval + ")");
+        Iterator<String> keys = objects.keys();
+
+        while (keys.hasNext()){
+
+            String key1 = keys.next();
+
+            if(objects.get(key1) instanceof JSONObject){
+
+                JSONObject values = objects.getJSONObject(key1);
+
+                outp += "Date: " + key1 + ": " + values.getString(key) + "\n";
+
+            }
+
+        }
+
+        return outp;
+
+    }
+
+    }
 
 
-
-    //}
-
-}
