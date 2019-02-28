@@ -53,32 +53,19 @@ public class Gui extends Application {
          queryButton.setOnAction(event -> {
 
               String series = dataSeries.getValue().toString();
-              int interval = Integer.parseInt(timeInterval.getValue().toString().replace("min", ""));
-              Date time;
-              Calendar cal = Calendar.getInstance();
-              cal.set(Calendar.YEAR, 2019);
-              cal.set(Calendar.MONTH, 1);
-              cal.set(Calendar.DATE, 26);
-              cal.set(Calendar.HOUR_OF_DAY, 16);
-              cal.set(Calendar.MINUTE, 0);
-              cal.set(Calendar.SECOND, 0);
-              time = cal.getTime();
-              System.out.println(time);
+              //int interval = Integer.parseInt(timeInterval.getValue().toString().replace("min", ""));
 
               data = new AlphaVantage();
 
                {
 
                    try {
-                        String out = data.getJson(series, cal, time ,interval);
+                        String out = data.getJson(series);
                         text.appendText(out);
-                        //cal.add(Calendar.MINUTE, - interval);
-                        //time = cal.getTime();
 
                    } catch (Exception e) {
 
                         System.out.println(e);
-                        //break;
 
                    }
               }

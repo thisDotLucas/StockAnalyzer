@@ -15,7 +15,7 @@ import org.json.JSONString;
 
 public class AlphaVantage {
 
-    public static String getJson(String key, Calendar cal, Date time, int interval) throws Exception {
+    public static String getJson(String key) throws Exception {
 
         try {
 
@@ -46,7 +46,7 @@ public class AlphaVantage {
             while (keys.hasNext()){
 
                 String key1 = keys.next();
-                
+
                 if(objects.get(key1) instanceof JSONObject){
 
                     JSONObject values = objects.getJSONObject(key1);
@@ -59,33 +59,11 @@ public class AlphaVantage {
 
             return outp;
 
-           // for(int i = 0; i < objects.length(); i++) {
-
-             //   time = cal.getTime();
-               // if (objects.has(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(time)) && !objects.isNull(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(time))) {
-
-                 //   JSONObject dates = objects.getJSONObject(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(time));
-                   // cal.add(Calendar.MINUTE, -interval);
-
-                    //outp += "Date: " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(time) + ": " + dates.getString(key) + "\n";
-
-                //} else {
-
-                  //  cal.add(Calendar.MINUTE, -interval);
-                    //outp += "x\n";
-
-                //}
-
-            //}
-
-            //return outp;
-
         } catch (Exception e) {
 
             System.out.println(e);
 
         }
-
 
         return "";
     }
