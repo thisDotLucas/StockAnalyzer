@@ -100,7 +100,7 @@ public class Gui extends Application {
          dataSeries.getStylesheets().add("prog3/ChoiceBoxes.css");
 
          timeSeries = new ChoiceBox(FXCollections.observableArrayList(
-                 "TIME_SERIES_INTRADAY", "TIME_SERIES_MONTHLY_ADJUSTED")
+                 "TIME_SERIES_INTRADAY", "TIME_SERIES_DAILY-ADJUSTED", "TIME_SERIES_WEEKLY_ADJUSTED", "TIME_SERIES_MONTHLY_ADJUSTED")
          );
          timeSeries.getStylesheets().add("prog3/ChoiceBoxes.css");
 
@@ -110,12 +110,12 @@ public class Gui extends Application {
          symbol.getStylesheets().add("prog3/ChoiceBoxes.css");
 
          timeInterval = new ChoiceBox(FXCollections.observableArrayList(
-                 "1min", "5min", "10min", "15min", "30min", "60min", "120min")
+                 "1min", "5min", "15min", "30min", "60min")
          );
          timeInterval.getStylesheets().add("prog3/ChoiceBoxes.css");
 
          outputSize = new ChoiceBox(FXCollections.observableArrayList(
-                 "full")
+                 "full", "compact")
          );
          outputSize.getStylesheets().add("prog3/ChoiceBoxes.css");
 
