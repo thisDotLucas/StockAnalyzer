@@ -18,8 +18,6 @@ public class getChartData {
 
     public static LineChart getData(LineChart lineChart,String data){
 
-        ObservableList<String> dates;
-        ArrayList<String> listOfDates = new ArrayList<>();
         BufferedReader bufReader = new BufferedReader(new StringReader(data));
         XYChart.Series series = new XYChart.Series();
         String line;
@@ -29,30 +27,27 @@ public class getChartData {
 
         try {
 
+            lineChart.getData().add(series);
+
             while ((line = bufReader.readLine()) != null) {
 
                 if ((counter % 10) == 1) {
 
                     line = line.replaceAll(":", "").replace("Date", "");
-                    System.out.println(line);
                     if(line.length() < 23)
                         date = line.substring(0, 11);
                     else
                         date = line.substring(0, 18);
-                    System.out.println(date);
                     line = line.replace(date, "");
                     value = Double.parseDouble(line);
                     series.getData().add(new XYChart.Data(date, value));
-                    lineChart.getData().add(series);
 
                 }
 
+                series.getData().removeAll();
                 counter++;
 
             }
-
-            dates = FXCollections.observableArrayList(listOfDates);
-            print(dates);
 
             return lineChart;
 

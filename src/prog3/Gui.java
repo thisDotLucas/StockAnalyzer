@@ -129,7 +129,7 @@ public class Gui extends Application {
         dataSeries.getStylesheets().add("prog3/ChoiceBoxes.css");
 
         timeSeries = new ChoiceBox(FXCollections.observableArrayList(
-                "TIME_SERIES_INTRADAY", "TIME_SERIES_DAILY_ADJUSTED", "TIME_SERIES_WEEKLY_ADJUSTED", "TIME_SERIES_MONTHLY_ADJUSTED")
+                "TIME_SERIES_INTRADAY", "TIME_SERIES_DAILY", "TIME_SERIES_DAILY_ADJUSTED", "TIME_SERIES_WEEKLY", "TIME_SERIES_WEEKLY_ADJUSTED", "TIME_SERIES_MONTHLY", "TIME_SERIES_MONTHLY_ADJUSTED")
         );
         timeSeries.getStylesheets().add("prog3/ChoiceBoxes.css");
 
@@ -171,10 +171,25 @@ public class Gui extends Application {
             if (dataSeries.getValue() != null)
                 mem = dataSeries.getValue().toString();
 
-            if (newValue.toString().equals("TIME_SERIES_DAILY_ADJUSTED")) {
+            if (newValue.toString().equals("TIME_SERIES_DAILY_ADJUSTED") ) {
 
                 ObservableList<String> newChoices = FXCollections.observableArrayList("1. open", "2. high", "3. low", "4. close", "5. adjusted close", "6. volume", "7. dividend amount", "8. split coefficient");
                 setChoiceBoxes(newChoices, mem, true, "Time Series (Daily)", "");
+
+            } else if (newValue.toString().equals("TIME_SERIES_DAILY")){
+
+                ObservableList<String> newChoices = FXCollections.observableArrayList("1. open", "2. high", "3. low", "4. close", "5. volume");
+                setChoiceBoxes(newChoices, mem, true, "Time Series (Daily)", "");
+
+            } else if (newValue.toString().equals("TIME_SERIES_WEEKLY")){
+
+                ObservableList<String> newChoices = FXCollections.observableArrayList("1. open", "2. high", "3. low", "4. close", "5. volume");
+                setChoiceBoxes(newChoices, mem, true, "Weekly Time Series", "");
+
+            } else if (newValue.toString().equals("TIME_SERIES_MONTHLY")){
+
+                ObservableList<String> newChoices = FXCollections.observableArrayList("1. open", "2. high", "3. low", "4. close", "5. volume");
+                setChoiceBoxes(newChoices, mem, true, "Monthly Time Series", "");
 
             } else if (newValue.toString().equals("TIME_SERIES_MONTHLY_ADJUSTED")) {
 
