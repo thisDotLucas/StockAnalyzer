@@ -12,6 +12,7 @@ import java.util.Iterator;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONString;
+import prog3.AlertBox;
 
 public class AlphaVantage {
 
@@ -46,7 +47,7 @@ public class AlphaVantage {
 
         } catch (Exception e) {
 
-            System.out.println(e);
+            AlertBox.display("Alert", "Fill all choice boxes.");
 
         }
 

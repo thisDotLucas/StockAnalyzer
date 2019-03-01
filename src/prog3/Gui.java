@@ -15,18 +15,26 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import json.AlphaVantage;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 
 public class Gui extends Application {
+
+    /*
+    text: Textrutan json data appendas hit.
+    queryButton: Söker json data från URL.
+    Choicebox: Olika alternativ som förändrar URL:en så datan kommer från rätt plats.
+    Label: Beskriver choiceboxarna.
+    data: Json class.
+    counter: Håller reda på hur många gånger man sökt json data, används för att veta om första sökningen utförs.
+    counter2: counter2 = 0 -> dataseries får inte updateras för man har inte sökt data för nyvald time series, counter2 = 1 -> dataserie får updateras.
+     */
 
     TextArea text;
     Button queryButton;
     ChoiceBox dataSeries, timeSeries, symbol, timeInterval, outputSize;
     Label dataLabel, dataLabe2, dataLabe3, dataLabe4, dataLabe5;
     AlphaVantage data;
-    int counter = 0;
+    int counter = 0; //
+    int counter2 = 0; //
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -40,54 +48,43 @@ public class Gui extends Application {
         layout.setVgap(8);
         layout.setHgap(10);
 
-        graphLayout.setPadding(new Insets(15, 15, 15, 15));
-        graphLayout.setVgap(8);
-        graphLayout.setHgap(10);
-
-
-        //Graph
-        //FXMLDocumentController graph = new FXMLDocumentController();
-        //GraphController graph = new GraphController();
-
-
         //Querybutton
         queryButton = new Button("Do query");
         queryButton.setOnAction(event -> {
 
+            try {
             text.clear();
+            counter2 ++;
             String series = dataSeries.getValue().toString();
             String interval = "&interval=" + timeInterval.getValue().toString();
             String timeSer = timeSeries.getValue().toString();
             String symb = "&symbol=" + symbol.getValue().toString();
             String size = "&outputsize=" + outputSize.getValue().toString();
 
+            if (series.equals("")||timeSer.equals("")||symb.equals("&symbol")){
+
+                AlertBox.display("Alert", "Fill all choice boxes.");
+
+            }
+
             data = new AlphaVantage();
 
-            {
-
-                try {
-
-                    String out = data.getJson(series, interval, timeSer, symb, size);
-                    appendText(out, false);
-                    counter++;
+            String out = data.getJson(series, interval, timeSer, symb, size);
+            appendText(out, false);
+            counter++;
 
                 } catch (Exception e) {
 
-                    System.out.println(e);
+                    AlertBox.display("Alert", "Fill all choice boxes.");
 
                 }
-            }
-
-        });
-        GridPane.setConstraints(queryButton, 1, 5);
+            });
 
 
         //Textarea
         text = new TextArea();
         text.setMinSize(500, 350);
         text.positionCaret(500);
-        GridPane.setConstraints(text, 0, 7);
-        GridPane.setColumnSpan(text, 5);
 
 
         //Labels
@@ -128,7 +125,7 @@ public class Gui extends Application {
         //Choicebox listeners
         dataSeries.getSelectionModel().selectedItemProperty().addListener((item, oldValue, newValue) -> {
 
-            if (counter > 0) {
+            if (counter > 0 && counter2 > 0) {
 
                 text.clear();
                 appendText(data.getUpdate(data.object, newValue.toString(), timeInterval.getValue().toString()), false);
@@ -138,7 +135,10 @@ public class Gui extends Application {
 
         timeSeries.getSelectionModel().selectedItemProperty().addListener((item, oldValue, newValue) -> {
 
-            String mem = dataSeries.getValue().toString();
+            String mem = "";
+
+            if (dataSeries.getValue() != null)
+                mem = dataSeries.getValue().toString();
 
             if (newValue.toString().equals("TIME_SERIES_DAILY_ADJUSTED")) {
 
@@ -162,7 +162,6 @@ public class Gui extends Application {
                     ObservableList<String> newChoices = FXCollections.observableArrayList("1. open", "2. high", "3. low", "4. close", "5. volume");
                     setChoiceBoxes(newChoices, mem, false, "15min", "full");
 
-
                 }
             }
 
@@ -180,8 +179,10 @@ public class Gui extends Application {
         GridPane.setConstraints(symbol, 1, 2);
         GridPane.setConstraints(timeInterval, 1, 3);
         GridPane.setConstraints(outputSize, 1, 4);
+        GridPane.setConstraints(queryButton, 1, 5);
+        GridPane.setConstraints(text, 0, 7);
+        GridPane.setColumnSpan(text, 5);
         main.setLeft(layout);
-        //main.setCenter(graph.initialize());
 
 
         //Scene
@@ -197,8 +198,8 @@ public class Gui extends Application {
         primaryStage.sizeToScene();
         primaryStage.show();
 
-
     }
+
 
     public void appendText(String text1, Boolean moveScrollBar) {
         if (moveScrollBar)
@@ -213,6 +214,7 @@ public class Gui extends Application {
 
     public void setChoiceBoxes(ObservableList newChoices, String mem, boolean x, String value, String after){
 
+        counter2 = 0;
         timeInterval.setDisable(x);
         outputSize.setDisable(x);
         timeInterval.setValue(value);
@@ -222,4 +224,3 @@ public class Gui extends Application {
 
     }
 }
-
