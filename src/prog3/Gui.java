@@ -3,6 +3,7 @@ package prog3;
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -66,9 +67,9 @@ public class Gui extends Application {
 
                 try {
 
-                        String out = data.getJson(series, interval, timeSer, symb, size);
-                        text.appendText(out);
-                        counter++;
+                    String out = data.getJson(series, interval, timeSer, symb, size);
+                    appendText(out, false);
+                    counter++;
 
                 } catch (Exception e) {
 
@@ -125,47 +126,42 @@ public class Gui extends Application {
 
 
         //Choicebox listeners
-            dataSeries.getSelectionModel().selectedItemProperty().addListener((item, oldValue, newValue) -> {
+        dataSeries.getSelectionModel().selectedItemProperty().addListener((item, oldValue, newValue) -> {
 
-                if (counter > 0) {
+            if (counter > 0) {
 
-                    text.clear();
-                    text.appendText(data.getUpdate(data.object, newValue.toString(), timeInterval.getValue().toString()));
+                text.clear();
+                appendText(data.getUpdate(data.object, newValue.toString(), timeInterval.getValue().toString()), false);
 
-                }
-            });
+            }
+        });
 
         timeSeries.getSelectionModel().selectedItemProperty().addListener((item, oldValue, newValue) -> {
 
-            if (newValue.toString().equals("TIME_SERIES_DAILY_ADJUSTED")){
+            String mem = dataSeries.getValue().toString();
 
-                timeInterval.setDisable(true);
-                outputSize.setDisable(true);
-                timeInterval.setValue("Time Series (Daily)");
-                outputSize.setValue("");
+            if (newValue.toString().equals("TIME_SERIES_DAILY_ADJUSTED")) {
 
-            } else if (newValue.toString().equals("TIME_SERIES_MONTHLY_ADJUSTED")){
+                ObservableList<String> newChoices = FXCollections.observableArrayList("1. open", "2. high", "3. low", "4. close", "5. adjusted close", "6. volume", "7. dividend amount", "8. split coefficient");
+                setChoiceBoxes(newChoices, mem, true, "Time Series (Daily)", "");
 
-                timeInterval.setDisable(true);
-                outputSize.setDisable(true);
-                timeInterval.setValue("Monthly Adjusted Time Series");
-                outputSize.setValue("");
+            } else if (newValue.toString().equals("TIME_SERIES_MONTHLY_ADJUSTED")) {
 
-            } else if (newValue.toString().equals("TIME_SERIES_WEEKLY_ADJUSTED")){
+                ObservableList<String> newChoices = FXCollections.observableArrayList("1. open", "2. high", "3. low", "4. close", "5. adjusted close", "6. volume", "7. dividend amount");
+                setChoiceBoxes(newChoices, mem, true, "Monthly Adjusted Time Series", "");
 
-                timeInterval.setDisable(true);
-                outputSize.setDisable(true);
-                timeInterval.setValue("Weekly Adjusted Time Series");
-                outputSize.setValue("");
+            } else if (newValue.toString().equals("TIME_SERIES_WEEKLY_ADJUSTED")) {
+
+                ObservableList<String> newChoices = FXCollections.observableArrayList("1. open", "2. high", "3. low", "4. close", "5. adjusted close", "6. volume", "7. dividend amount");
+                setChoiceBoxes(newChoices, mem, true, "Weekly Adjusted Time Series", "");
 
             } else {
 
                 if (counter > 0) {
 
-                    timeInterval.setDisable(false);
-                    outputSize.setDisable(false);
-                    timeInterval.setValue("15min");
-                    outputSize.setValue("full");
+                    ObservableList<String> newChoices = FXCollections.observableArrayList("1. open", "2. high", "3. low", "4. close", "5. volume");
+                    setChoiceBoxes(newChoices, mem, false, "15min", "full");
+
 
                 }
             }
@@ -173,35 +169,57 @@ public class Gui extends Application {
         });
 
 
-            //Placements
-            GridPane.setConstraints(dataLabel, 0, 0);
-            GridPane.setConstraints(dataLabe2, 0, 1);
-            GridPane.setConstraints(dataLabe3, 0, 2);
-            GridPane.setConstraints(dataLabe4, 0, 3);
-            GridPane.setConstraints(dataLabe5, 0, 4);
-            GridPane.setConstraints(dataSeries, 1, 0);
-            GridPane.setConstraints(timeSeries, 1, 1);
-            GridPane.setConstraints(symbol, 1, 2);
-            GridPane.setConstraints(timeInterval, 1, 3);
-            GridPane.setConstraints(outputSize, 1, 4);
-            main.setLeft(layout);
-            //main.setCenter(graph.initialize());
+        //Placements
+        GridPane.setConstraints(dataLabel, 0, 0);
+        GridPane.setConstraints(dataLabe2, 0, 1);
+        GridPane.setConstraints(dataLabe3, 0, 2);
+        GridPane.setConstraints(dataLabe4, 0, 3);
+        GridPane.setConstraints(dataLabe5, 0, 4);
+        GridPane.setConstraints(dataSeries, 1, 0);
+        GridPane.setConstraints(timeSeries, 1, 1);
+        GridPane.setConstraints(symbol, 1, 2);
+        GridPane.setConstraints(timeInterval, 1, 3);
+        GridPane.setConstraints(outputSize, 1, 4);
+        main.setLeft(layout);
+        //main.setCenter(graph.initialize());
 
 
-            //Scene
-            layout.getChildren().addAll(dataLabel, dataLabe2, dataLabe3, dataLabe4, dataLabe5,
-                    dataSeries, timeSeries, symbol, timeInterval, outputSize, queryButton, text);
+        //Scene
+        layout.getChildren().addAll(dataLabel, dataLabe2, dataLabe3, dataLabe4, dataLabe5,
+                dataSeries, timeSeries, symbol, timeInterval, outputSize, queryButton, text);
 
-            Scene scene = new Scene(main);
-
-
-            //Stage
-            primaryStage.setTitle("Stock Analyzer");
-            primaryStage.setScene(scene);
-            primaryStage.sizeToScene();
-            primaryStage.show();
+        Scene scene = new Scene(main);
 
 
+        //Stage
+        primaryStage.setTitle("Stock Analyzer");
+        primaryStage.setScene(scene);
+        primaryStage.sizeToScene();
+        primaryStage.show();
+
+
+    }
+
+    public void appendText(String text1, Boolean moveScrollBar) {
+        if (moveScrollBar)
+            text.appendText(text1);
+        else {
+            double scrollTop = text.getScrollTop();
+            text.setText(text1);
+            text.setScrollTop(scrollTop);
         }
     }
+
+
+    public void setChoiceBoxes(ObservableList newChoices, String mem, boolean x, String value, String after){
+
+        timeInterval.setDisable(x);
+        outputSize.setDisable(x);
+        timeInterval.setValue(value);
+        outputSize.setValue(after);
+        dataSeries.setItems(newChoices);
+        dataSeries.setValue(mem);
+
+    }
+}
 
