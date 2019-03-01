@@ -38,7 +38,6 @@ public class AlertBox {
         stage.sizeToScene();
         stage.showAndWait();
 
-
     }
 
 }

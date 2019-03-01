@@ -5,15 +5,20 @@ import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.chart.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import json.AlphaVantage;
+
+import java.util.Locale;
 
 
 public class Gui extends Application {
@@ -32,7 +37,12 @@ public class Gui extends Application {
     Button queryButton;
     ChoiceBox dataSeries, timeSeries, symbol, timeInterval, outputSize;
     Label dataLabel, dataLabe2, dataLabe3, dataLabe4, dataLabe5;
+    HBox chart;
     AlphaVantage data;
+    String chartData;
+    CategoryAxis xAxis = new CategoryAxis();
+    NumberAxis yAxis = new NumberAxis();
+    LineChart<String, Number> lineChart = new LineChart<>(xAxis, yAxis);
     int counter = 0; //
     int counter2 = 0; //
 
@@ -42,17 +52,18 @@ public class Gui extends Application {
         //Layouts
         BorderPane main = new BorderPane();
         GridPane layout = new GridPane();
-        GridPane graphLayout = new GridPane();
 
         layout.setPadding(new Insets(15, 15, 15, 15));
         layout.setVgap(8);
         layout.setHgap(10);
 
         //Querybutton
+        //Stage stage = new Stage();
         queryButton = new Button("Do query");
         queryButton.setOnAction(event -> {
 
             try {
+
             text.clear();
             counter2 ++;
             String series = dataSeries.getValue().toString();
@@ -70,14 +81,17 @@ public class Gui extends Application {
             data = new AlphaVantage();
 
             String out = data.getJson(series, interval, timeSer, symb, size);
+            chartData = out;
             appendText(out, false);
             counter++;
+            lineChart = getChartData.getData(lineChart, chartData);
 
                 } catch (Exception e) {
 
                     AlertBox.display("Alert", "Fill all choice boxes.");
 
                 }
+
             });
 
 
@@ -128,7 +142,9 @@ public class Gui extends Application {
             if (counter > 0 && counter2 > 0) {
 
                 text.clear();
-                appendText(data.getUpdate(data.object, newValue.toString(), timeInterval.getValue().toString()), false);
+                String out = data.getUpdate(data.object, newValue.toString(), timeInterval.getValue().toString());
+                chartData = out;
+                appendText(out, false);
 
             }
         });
@@ -168,6 +184,17 @@ public class Gui extends Application {
         });
 
 
+        //Chart
+        //CategoryAxis xAxis = new CategoryAxis();
+        //NumberAxis yAxis = new NumberAxis();
+        //LineChart<String, Number> lineChart = new LineChart<>(xAxis, yAxis);
+        //XYChart.Series series = new XYChart.Series();
+       // if (counter > 0)
+         // lineChart = getChartData.getData(series, lineChart, chartData);
+
+        //lineChart.getData().add(series);
+
+
         //Placements
         GridPane.setConstraints(dataLabel, 0, 0);
         GridPane.setConstraints(dataLabe2, 0, 1);
@@ -183,6 +210,7 @@ public class Gui extends Application {
         GridPane.setConstraints(text, 0, 7);
         GridPane.setColumnSpan(text, 5);
         main.setLeft(layout);
+        main.setRight(lineChart);
 
 
         //Scene
