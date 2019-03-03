@@ -83,7 +83,7 @@ public class Gui extends Application {
             String interval = "&interval=" + timeInterval.getValue().toString();
             String timeSer = timeSeries.getValue().toString();
             String symb = "&symbol=" + symbol.getValue().toString();
-            String size = "&outputsize=" + outputSize.getValue().toString();
+            String size = "&outputsize=" + outputSize.getValue();
 
             //Kollar om nån nödvändig choicebox har lämnats if so display alertbox
             if (series.equals("")||timeSer.equals("")||symb.equals("&symbol")){
@@ -99,13 +99,15 @@ public class Gui extends Application {
             lineChart.getData().clear();
             lineChart = getChartData.getData(lineChart, chartData);
 
-                } catch (Exception e) {
+            } catch (Exception e) {
+
+                    e.printStackTrace();
 
                     AlertBox.display("Alert", "Fill all choice boxes.");
 
-                }
+            }
 
-            });
+        });
 
 
         //Textarea
@@ -209,9 +211,9 @@ public class Gui extends Application {
 
             } else {
 
-                index = 0;
+                // index = 0;
 
-                if (counter > 0) {
+                if (counter > 0 || newValue.toString().equals("TIME_SERIES_INTRADAY")) {
 
                     ObservableList<String> newChoices = FXCollections.observableArrayList("1. open", "2. high", "3. low", "4. close", "5. volume");
                     setChoiceBoxes(newChoices, mem, false, "15min", "full");
