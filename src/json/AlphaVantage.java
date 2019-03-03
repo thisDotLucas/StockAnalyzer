@@ -4,56 +4,76 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Iterator;
-
-import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.JSONString;
 import prog3.AlertBox;
 
 public class AlphaVantage {
 
     public JSONObject object;
+    public JSONObject[] cache = new JSONObject[6];
+    public int[] usedIndexes = {9, 9, 9, 9, 9, 9};
 
 
     //gets json data och konverterar det till en string och sparar det i variabeln object
-    public String getJson(String key, String interval, String timeSer, String symbol, String size) throws Exception {
+    public String getJson(String key, String interval, String timeSer, String symbol, String size, int index) throws Exception {
 
-        try {
-            String url;
-            if (size.equals("&outputsize="))
-                url = "https://www.alphavantage.co/query?function=" + timeSer + symbol + "&apikey=0OPBQ9QM2UDDW9TD";
-            else
-                url = "https://www.alphavantage.co/query?function=" + timeSer + symbol + interval + size + "&apikey=0OPBQ9QM2UDDW9TD";
-            URL obj = new URL(url);
-            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-            con.setRequestMethod("GET");
-            con.setRequestProperty("User-Agent", "Mozilla/5.0");
-            int responseCode = con.getResponseCode();
-            System.out.println("\nSending 'GET' request to URL : " + url);
-            System.out.println("Response Code : " + responseCode);
-            BufferedReader in = new BufferedReader(
-                    new InputStreamReader(con.getInputStream()));
-            String inputLine;
-            StringBuffer response = new StringBuffer();
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
+        for (int i = 0; i < usedIndexes.length; i++) {
+
+            if (index == usedIndexes[i]) {
+
+                object = cache[i];
+                return getUpdate(object, key, interval);
+
             }
-            in.close();
-
-            object = new JSONObject(response.toString());
-            return getUpdate(object, key, interval);
-
-        } catch (Exception e) {
-
-            AlertBox.display("Alert", "Fill all choice boxes.");
 
         }
 
+            try {
+                String url;
+                if (size.equals("&outputsize="))
+                    url = "https://www.alphavantage.co/query?function=" + timeSer + symbol + "&apikey=0OPBQ9QM2UDDW9TD";
+                else
+                    url = "https://www.alphavantage.co/query?function=" + timeSer + symbol + interval + size + "&apikey=0OPBQ9QM2UDDW9TD";
+                URL obj = new URL(url);
+                HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+                con.setRequestMethod("GET");
+                con.setRequestProperty("User-Agent", "Mozilla/5.0");
+                int responseCode = con.getResponseCode();
+                System.out.println("\nSending 'GET' request to URL : " + url);
+                System.out.println("Response Code : " + responseCode);
+                BufferedReader in = new BufferedReader(
+                        new InputStreamReader(con.getInputStream()));
+                String inputLine;
+                StringBuffer response = new StringBuffer();
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                in.close();
+
+                object = new JSONObject(response.toString());
+
+                //cache
+                for (int i = 0; i < cache.length; i++) {
+
+                    if (i == index) {
+
+                        cache[i] = object;
+                        usedIndexes[i] = i;
+
+                    }
+
+                }
+                return getUpdate(object, key, interval);
+
+            } catch (Exception e) {
+
+                AlertBox.display("Alert", "Fill all choice boxes.");
+
+            }
+
         return "";
+
     }
 
 

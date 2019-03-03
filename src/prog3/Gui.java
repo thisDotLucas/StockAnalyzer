@@ -35,6 +35,8 @@ public class Gui extends Application {
     ChoiceBox dataSeries, timeSeries, symbol, timeInterval, outputSize;
     Label dataLabel, dataLabe2, dataLabe3, dataLabe4, dataLabe5;
 
+    int index;
+
     //Json
     AlphaVantage data;
 
@@ -66,7 +68,8 @@ public class Gui extends Application {
 
 
         //Querybutton
-        //Stage stage = new Stage();
+        //Json
+        data = new AlphaVantage();
         queryButton = new Button("Do query");
         queryButton.setOnAction(event -> {
 
@@ -89,10 +92,7 @@ public class Gui extends Application {
 
             }
 
-            //Json
-            data = new AlphaVantage();
-
-            String out = data.getJson(series, interval, timeSer, symb, size);
+            String out = data.getJson(series, interval, timeSer, symb, size, index);
             chartData = out;
             appendText(out, false);
             counter = 1;
@@ -175,31 +175,37 @@ public class Gui extends Application {
 
                 ObservableList<String> newChoices = FXCollections.observableArrayList("1. open", "2. high", "3. low", "4. close", "5. adjusted close", "6. volume", "7. dividend amount", "8. split coefficient");
                 setChoiceBoxes(newChoices, mem, true, "Time Series (Daily)", "");
+                index = 2;
 
             } else if (newValue.toString().equals("TIME_SERIES_DAILY")){
 
                 ObservableList<String> newChoices = FXCollections.observableArrayList("1. open", "2. high", "3. low", "4. close", "5. volume");
                 setChoiceBoxes(newChoices, mem, true, "Time Series (Daily)", "");
+                index = 1;
 
             } else if (newValue.toString().equals("TIME_SERIES_WEEKLY")){
 
                 ObservableList<String> newChoices = FXCollections.observableArrayList("1. open", "2. high", "3. low", "4. close", "5. volume");
                 setChoiceBoxes(newChoices, mem, true, "Weekly Time Series", "");
+                index = 3;
 
             } else if (newValue.toString().equals("TIME_SERIES_MONTHLY")){
 
                 ObservableList<String> newChoices = FXCollections.observableArrayList("1. open", "2. high", "3. low", "4. close", "5. volume");
                 setChoiceBoxes(newChoices, mem, true, "Monthly Time Series", "");
+                index = 5;
 
             } else if (newValue.toString().equals("TIME_SERIES_MONTHLY_ADJUSTED")) {
 
                 ObservableList<String> newChoices = FXCollections.observableArrayList("1. open", "2. high", "3. low", "4. close", "5. adjusted close", "6. volume", "7. dividend amount");
                 setChoiceBoxes(newChoices, mem, true, "Monthly Adjusted Time Series", "");
+                index = 6;
 
             } else if (newValue.toString().equals("TIME_SERIES_WEEKLY_ADJUSTED")) {
 
                 ObservableList<String> newChoices = FXCollections.observableArrayList("1. open", "2. high", "3. low", "4. close", "5. adjusted close", "6. volume", "7. dividend amount");
                 setChoiceBoxes(newChoices, mem, true, "Weekly Adjusted Time Series", "");
+                index = 4;
 
             } else {
 
@@ -207,6 +213,7 @@ public class Gui extends Application {
 
                     ObservableList<String> newChoices = FXCollections.observableArrayList("1. open", "2. high", "3. low", "4. close", "5. volume");
                     setChoiceBoxes(newChoices, mem, false, "15min", "full");
+                    index = 0;
 
                 }
             }
