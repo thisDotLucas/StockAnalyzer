@@ -5,7 +5,6 @@ import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.chart.*;
 import javafx.scene.control.Button;
@@ -14,11 +13,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import json.AlphaVantage;
-
-import java.util.Locale;
 
 
 public class Gui extends Application {
@@ -57,13 +53,13 @@ public class Gui extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
+        //Chart
         lineChart.setAnimated(false);
         lineChart.setLegendVisible(false);
 
         //Layouts
         BorderPane main = new BorderPane();
         GridPane layout = new GridPane();
-
         layout.setPadding(new Insets(15, 15, 15, 15));
         layout.setVgap(8);
         layout.setHgap(10);
@@ -78,18 +74,22 @@ public class Gui extends Application {
 
             text.clear();
             counter2 ++;
+
+            //returnerar värde från choiceboxes
             String series = dataSeries.getValue().toString();
             String interval = "&interval=" + timeInterval.getValue().toString();
             String timeSer = timeSeries.getValue().toString();
             String symb = "&symbol=" + symbol.getValue().toString();
             String size = "&outputsize=" + outputSize.getValue().toString();
 
+            //Kollar om nån nödvändig choicebox har lämnats if so display alertbox
             if (series.equals("")||timeSer.equals("")||symb.equals("&symbol")){
 
                 AlertBox.display("Alert", "Fill all choice boxes.");
 
             }
 
+            //Json
             data = new AlphaVantage();
 
             String out = data.getJson(series, interval, timeSer, symb, size);
@@ -251,6 +251,7 @@ public class Gui extends Application {
     }
 
 
+    //Skriver ut data i textarean och scrollar högst upp
     public void appendText(String text1, Boolean moveScrollBar) {
         if (moveScrollBar)
             text.appendText(text1);
@@ -262,6 +263,7 @@ public class Gui extends Application {
     }
 
 
+    //Ändrar värden på choiceboxes dynamiskt beroende på vilken Timeseries som är vald
     public void setChoiceBoxes(ObservableList newChoices, String mem, boolean x, String value, String after){
 
         counter2 = 0;

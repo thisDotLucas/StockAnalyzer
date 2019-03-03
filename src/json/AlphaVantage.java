@@ -18,6 +18,8 @@ public class AlphaVantage {
 
     public JSONObject object;
 
+
+    //gets json data och konverterar det till en string och sparar det i variabeln object
     public String getJson(String key, String interval, String timeSer, String symbol, String size) throws Exception {
 
         try {
@@ -54,6 +56,8 @@ public class AlphaVantage {
         return "";
     }
 
+
+    //Returnerar den informationen som användaren vill ha från Json stringen
     public static String getUpdate(JSONObject object, String key, String interval){
 
         JSONObject objects = null;

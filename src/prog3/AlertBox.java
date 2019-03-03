@@ -13,6 +13,8 @@ import java.awt.*;
 
 public class AlertBox {
 
+
+    //Används vid user errors
     public static void display(String title, String message){
 
         Stage stage = new Stage();
