@@ -209,11 +209,12 @@ public class Gui extends Application {
 
             } else {
 
+                index = 0;
+
                 if (counter > 0) {
 
                     ObservableList<String> newChoices = FXCollections.observableArrayList("1. open", "2. high", "3. low", "4. close", "5. volume");
                     setChoiceBoxes(newChoices, mem, false, "15min", "full");
-                    index = 0;
 
                 }
             }

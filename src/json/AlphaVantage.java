@@ -11,23 +11,23 @@ import prog3.AlertBox;
 public class AlphaVantage {
 
     public JSONObject object;
-    public JSONObject[] cache = new JSONObject[6];
-    public int[] usedIndexes = {9, 9, 9, 9, 9, 9};
+    //public JSONObject[] cache = new JSONObject[7];
+    //public int[] usedIndexes = {9, 9, 9, 9, 9, 9, 9};
 
 
     //gets json data och konverterar det till en string och sparar det i variabeln object
     public String getJson(String key, String interval, String timeSer, String symbol, String size, int index) throws Exception {
 
-        for (int i = 0; i < usedIndexes.length; i++) {
+      //  for (int i = 0; i < usedIndexes.length; i++) {
 
-            if (index == usedIndexes[i]) {
+        //    if (index == usedIndexes[i]) {
 
-                object = cache[i];
-                return getUpdate(object, key, interval);
+               // object = cache[i];
+                //return getUpdate(object, key, interval);
 
-            }
+            //}
 
-        }
+        //}
 
             try {
                 String url;
@@ -54,16 +54,16 @@ public class AlphaVantage {
                 object = new JSONObject(response.toString());
 
                 //cache
-                for (int i = 0; i < cache.length; i++) {
+               // for (int i = 0; i < cache.length; i++) {
 
-                    if (i == index) {
+                   // if (i == index) {
 
-                        cache[i] = object;
-                        usedIndexes[i] = i;
+                     //   cache[i] = object;
+                       // usedIndexes[i] = i;
 
-                    }
+                    //}
 
-                }
+                //}
                 return getUpdate(object, key, interval);
 
             } catch (Exception e) {
