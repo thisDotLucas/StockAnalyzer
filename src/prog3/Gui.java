@@ -73,7 +73,7 @@ public class Gui extends Application {
             try {
 
             text.clear();
-            counter2 ++;
+            counter2 = 1;
 
             //returnerar värde från choiceboxes
             String series = dataSeries.getValue().toString();
@@ -95,7 +95,7 @@ public class Gui extends Application {
             String out = data.getJson(series, interval, timeSer, symb, size);
             chartData = out;
             appendText(out, false);
-            counter++;
+            counter = 1;
             lineChart.getData().clear();
             lineChart = getChartData.getData(lineChart, chartData);
 
