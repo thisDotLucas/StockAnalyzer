@@ -136,7 +136,7 @@ public class Gui extends Application {
         timeSeries.getStylesheets().add("prog3/ChoiceBoxes.css");
 
         symbol = new ChoiceBox(FXCollections.observableArrayList(
-                "MSFT")
+                "MSFT", "AAPL", "FB", "TWTR", "MCD", "NTDOY", "NOK", "NKE", "TM", "HMC")
         );
         symbol.getStylesheets().add("prog3/ChoiceBoxes.css");
 
