@@ -76,35 +76,35 @@ public class Gui extends Application {
 
             try {
 
-            text.clear();
-            counter2 = 1;
+                text.clear();
+                counter2 = 1;
 
-            //returnerar värde från choiceboxes
-            String series = dataSeries.getValue().toString();
-            String interval = "&interval=" + timeInterval.getValue().toString();
-            String timeSer = timeSeries.getValue().toString();
-            String symb = "&symbol=" + symbol.getValue().toString();
-            String size = "&outputsize=" + outputSize.getValue();
+                //returnerar värde från choiceboxes
+                String series = dataSeries.getValue().toString();
+                String interval = "&interval=" + timeInterval.getValue().toString();
+                String timeSer = timeSeries.getValue().toString();
+                String symb = "&symbol=" + symbol.getValue().toString();
+                String size = "&outputsize=" + outputSize.getValue();
 
-            //Kollar om nån nödvändig choicebox har lämnats if so display alertbox
-            if (series.equals("")||timeSer.equals("")||symb.equals("&symbol")){
+                //Kollar om nån nödvändig choicebox har lämnats if so display alertbox
+                if (series.equals("") || timeSer.equals("") || symb.equals("&symbol")) {
 
-                AlertBox.display("Alert", "Fill all choice boxes.");
+                    AlertBox.display("Alert", "Fill all choice boxes.");
 
-            }
+                }
 
-            String out = data.getJson(series, interval, timeSer, symb, size);
-            chartData = out;
-            appendText(out, false);
-            counter = 1;
-            lineChart.getData().clear();
-            lineChart = getChartData.getData(lineChart, chartData, inter);
+                String out = data.getJson(series, interval, timeSer, symb, size);
+                chartData = out;
+                appendText(out, false);
+                counter = 1;
+                lineChart.getData().clear();
+                lineChart = getChartData.getData(lineChart, chartData, inter);
 
             } catch (Exception e) {
 
-                    e.printStackTrace();
+                e.printStackTrace();
 
-                    AlertBox.display("Alert", "Fill all choice boxes.");
+                AlertBox.display("Alert", "Fill all choice boxes.");
 
             }
 
@@ -153,6 +153,17 @@ public class Gui extends Application {
 
 
         //Choicebox listeners
+        symbol.getSelectionModel().selectedItemProperty().addListener((item, oldValue, newValue) -> {
+
+            if(oldValue != newValue){
+                
+                counter2 = 0;
+
+            }
+
+        });
+
+
         dataSeries.getSelectionModel().selectedItemProperty().addListener((item, oldValue, newValue) -> {
 
             if (counter > 0 && counter2 > 0) {
@@ -180,25 +191,25 @@ public class Gui extends Application {
             if (dataSeries.getValue() != null)
                 mem = dataSeries.getValue().toString();
 
-            if (newValue.toString().equals("TIME_SERIES_DAILY_ADJUSTED") ) {
+            if (newValue.toString().equals("TIME_SERIES_DAILY_ADJUSTED")) {
 
                 ObservableList<String> newChoices = FXCollections.observableArrayList("1. open", "2. high", "3. low", "4. close", "5. adjusted close", "6. volume", "7. dividend amount", "8. split coefficient");
                 setChoiceBoxes(newChoices, mem, true, "Time Series (Daily)", "");
                 //index = 2;
 
-            } else if (newValue.toString().equals("TIME_SERIES_DAILY")){
+            } else if (newValue.toString().equals("TIME_SERIES_DAILY")) {
 
                 ObservableList<String> newChoices = FXCollections.observableArrayList("1. open", "2. high", "3. low", "4. close", "5. volume");
                 setChoiceBoxes(newChoices, mem, true, "Time Series (Daily)", "");
                 //index = 1;
 
-            } else if (newValue.toString().equals("TIME_SERIES_WEEKLY")){
+            } else if (newValue.toString().equals("TIME_SERIES_WEEKLY")) {
 
                 ObservableList<String> newChoices = FXCollections.observableArrayList("1. open", "2. high", "3. low", "4. close", "5. volume");
                 setChoiceBoxes(newChoices, mem, true, "Weekly Time Series", "");
                 //index = 3;
 
-            } else if (newValue.toString().equals("TIME_SERIES_MONTHLY")){
+            } else if (newValue.toString().equals("TIME_SERIES_MONTHLY")) {
 
                 ObservableList<String> newChoices = FXCollections.observableArrayList("1. open", "2. high", "3. low", "4. close", "5. volume");
                 setChoiceBoxes(newChoices, mem, true, "Monthly Time Series", "");
@@ -219,7 +230,7 @@ public class Gui extends Application {
             } else {
 
                 // index = 0;
-                if (counter > 0){
+                if (counter > 0) {
 
                     ObservableList<String> newChoices = FXCollections.observableArrayList("1. open", "2. high", "3. low", "4. close", "5. volume");
                     setChoiceBoxes(newChoices, mem, false, "15min", "full");
@@ -252,8 +263,6 @@ public class Gui extends Application {
         main.setLeft(layout);
         lineChart.getXAxis();
         main.setRight(lineChart);
-
-
 
 
         //Scene
