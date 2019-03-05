@@ -156,13 +156,12 @@ public class Gui extends Application {
         symbol.getSelectionModel().selectedItemProperty().addListener((item, oldValue, newValue) -> {
 
             if(oldValue != newValue){
-                
+
                 counter2 = 0;
 
             }
 
         });
-
 
         dataSeries.getSelectionModel().selectedItemProperty().addListener((item, oldValue, newValue) -> {
 
@@ -195,41 +194,34 @@ public class Gui extends Application {
 
                 ObservableList<String> newChoices = FXCollections.observableArrayList("1. open", "2. high", "3. low", "4. close", "5. adjusted close", "6. volume", "7. dividend amount", "8. split coefficient");
                 setChoiceBoxes(newChoices, mem, true, "Time Series (Daily)", "");
-                //index = 2;
 
             } else if (newValue.toString().equals("TIME_SERIES_DAILY")) {
 
                 ObservableList<String> newChoices = FXCollections.observableArrayList("1. open", "2. high", "3. low", "4. close", "5. volume");
                 setChoiceBoxes(newChoices, mem, true, "Time Series (Daily)", "");
-                //index = 1;
 
             } else if (newValue.toString().equals("TIME_SERIES_WEEKLY")) {
 
                 ObservableList<String> newChoices = FXCollections.observableArrayList("1. open", "2. high", "3. low", "4. close", "5. volume");
                 setChoiceBoxes(newChoices, mem, true, "Weekly Time Series", "");
-                //index = 3;
 
             } else if (newValue.toString().equals("TIME_SERIES_MONTHLY")) {
 
                 ObservableList<String> newChoices = FXCollections.observableArrayList("1. open", "2. high", "3. low", "4. close", "5. volume");
                 setChoiceBoxes(newChoices, mem, true, "Monthly Time Series", "");
-                //index = 5;
 
             } else if (newValue.toString().equals("TIME_SERIES_MONTHLY_ADJUSTED")) {
 
                 ObservableList<String> newChoices = FXCollections.observableArrayList("1. open", "2. high", "3. low", "4. close", "5. adjusted close", "6. volume", "7. dividend amount");
                 setChoiceBoxes(newChoices, mem, true, "Monthly Adjusted Time Series", "");
-                //index = 6;
 
             } else if (newValue.toString().equals("TIME_SERIES_WEEKLY_ADJUSTED")) {
 
                 ObservableList<String> newChoices = FXCollections.observableArrayList("1. open", "2. high", "3. low", "4. close", "5. adjusted close", "6. volume", "7. dividend amount");
                 setChoiceBoxes(newChoices, mem, true, "Weekly Adjusted Time Series", "");
-                //index = 4;
 
             } else {
 
-                // index = 0;
                 if (counter > 0) {
 
                     ObservableList<String> newChoices = FXCollections.observableArrayList("1. open", "2. high", "3. low", "4. close", "5. volume");

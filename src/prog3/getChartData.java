@@ -35,7 +35,7 @@ public class getChartData {
 
             while ((line = bufReader.readLine()) != null) {
 
-                //Tar endast var tionde värde så grafen hålls läsbar :)
+                //Tar endast var gap värde så grafen hålls läsbar :)
                 if ((counter % gap) == 1) {
 
                     line = line.replaceAll(":", "").replace("Date", "");
