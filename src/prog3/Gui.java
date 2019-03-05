@@ -44,6 +44,7 @@ public class Gui extends Application {
     //counters
     int counter = 0;
     int counter2 = 0;
+    int inter = 0;
 
 
     //Graph
@@ -97,7 +98,7 @@ public class Gui extends Application {
             appendText(out, false);
             counter = 1;
             lineChart.getData().clear();
-            lineChart = getChartData.getData(lineChart, chartData);
+            lineChart = getChartData.getData(lineChart, chartData, inter);
 
             } catch (Exception e) {
 
@@ -160,10 +161,16 @@ public class Gui extends Application {
                 String out = data.getUpdate(data.object, newValue.toString(), timeInterval.getValue().toString());
                 chartData = out;
                 lineChart.getData().clear();
-                lineChart = getChartData.getData(lineChart, chartData);
+                lineChart = getChartData.getData(lineChart, chartData, inter);
                 appendText(out, false);
 
             }
+        });
+
+        timeInterval.getSelectionModel().selectedItemProperty().addListener((item, oldValue, newValue) -> {
+            if (timeSeries.getValue().toString().equals("TIME_SERIES_INTRADAY") && !newValue.equals(""))
+                inter = Integer.parseInt(timeInterval.getValue().toString().replace("min", ""));
+
         });
 
         timeSeries.getSelectionModel().selectedItemProperty().addListener((item, oldValue, newValue) -> {
@@ -283,6 +290,7 @@ public class Gui extends Application {
         counter2 = 0;
         timeInterval.setDisable(x);
         outputSize.setDisable(x);
+        inter = 0;
         timeInterval.setValue(value);
         outputSize.setValue(after);
         dataSeries.setItems(newChoices);

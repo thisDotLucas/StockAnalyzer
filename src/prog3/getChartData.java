@@ -12,7 +12,7 @@ public class getChartData {
 
 
     //Tar all data som finns i textarean och gör det kompabelt med grafen
-    public static LineChart getData(LineChart lineChart,String data){
+    public static LineChart getData(LineChart lineChart,String data, int interval){
 
         BufferedReader bufReader = new BufferedReader(new StringReader(data));
         XYChart.Series series = new XYChart.Series();
@@ -20,15 +20,23 @@ public class getChartData {
         String date;
         Number value;
         int counter = 0;
+        int gap;
 
         try {
+            if(interval < 15 && interval != 0) {
+                gap = 40;
+                lineChart.setCreateSymbols(false);
+            } else {
+                gap = 10;
+                lineChart.setCreateSymbols(true);
+            }
 
             lineChart.getData().add(series);
 
             while ((line = bufReader.readLine()) != null) {
 
                 //Tar endast var tionde värde så grafen hålls läsbar :)
-                if ((counter % 10) == 1) {
+                if ((counter % gap) == 1) {
 
                     line = line.replaceAll(":", "").replace("Date", "");
                     if(line.length() < 23)

@@ -1,5 +1,6 @@
 package json;
 
+import com.sun.org.apache.bcel.internal.generic.JsrInstruction;
 import org.json.JSONObject;
 import prog3.AlertBox;
 
@@ -7,6 +8,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 
 public class AlphaVantage {
@@ -90,17 +93,21 @@ public class AlphaVantage {
         else
             objects = object.getJSONObject(interval);
 
-        Iterator<String> keys = objects.keys();
+        Iterator<String> it = objects.keys();
+        ArrayList<String> dates = new ArrayList<>();
 
-        while (keys.hasNext()) {
+        while (it.hasNext()) {
+            dates.add(it.next());
+        }
 
-            String key1 = keys.next();
+        Collections.sort(dates);
 
-            if (objects.get(key1) instanceof JSONObject) {
+        for (String date : dates) {
 
-                JSONObject values = objects.getJSONObject(key1);
+            if (objects.get(date) instanceof JSONObject) {
 
-                outp += "Date: " + key1 + ": " + values.getString(key) + "\n";
+                JSONObject values = objects.getJSONObject(date);
+                outp += "Date: " + date + ": " + values.getString(key) + "\n";
 
             }
 
